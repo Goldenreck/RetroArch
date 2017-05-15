@@ -311,6 +311,14 @@ int generic_action_ok_displaylist_push(const char *path,
             dl_type            = DISPLAYLIST_FILE_BROWSER_SELECT_FILE;
          }
          break;
+      case ACTION_OK_DL_FONT_FILE:
+         filebrowser_clear_type();
+         info.type          = type;
+         info.directory_ptr = idx;
+         info_path          = "/";
+         info_label         = label;
+         dl_type            = DISPLAYLIST_FILE_BROWSER_SELECT_FILE;
+         break;
       case ACTION_OK_DL_DISK_IMAGE_APPEND_LIST:
          filebrowser_clear_type();
          info.type          = type;
@@ -3313,6 +3321,13 @@ static int action_ok_record_configfile(const char *path,
          entry_idx, ACTION_OK_DL_RECORD_CONFIGFILE);
 }
 
+static int action_ok_font_file(const char *path,
+      const char *label, unsigned type, size_t idx, size_t entry_idx)
+{
+   return generic_action_ok_displaylist_push(path, NULL, label, type, idx,
+         entry_idx, ACTION_OK_DL_FONT_FILE);
+}
+
 static int action_ok_remap_file(const char *path,
       const char *label, unsigned type, size_t idx, size_t entry_idx)
 {
@@ -4244,6 +4259,9 @@ static int menu_cbs_init_bind_ok_compare_label(menu_file_list_cbs_t *cbs,
             break;
          case MENU_ENUM_LABEL_RECORD_CONFIG:
             BIND_ACTION_OK(cbs, action_ok_record_configfile);
+            break;
+         case MENU_ENUM_LABEL_XMB_FONT:
+            BIND_ACTION_OK(cbs, action_ok_font_file);
             break;
 #ifdef HAVE_NETWORKING
          case MENU_ENUM_LABEL_DOWNLOAD_CORE_CONTENT:
